@@ -1,7 +1,6 @@
 package org.example;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.ArcType;
 
 public class Follower extends Player {
 
@@ -11,7 +10,6 @@ public class Follower extends Player {
 
     @Override
     public void move(double dt){
-
         double distanceX = this.dirX-this.x;
         double distanceY = this.dirY-this.y;
 
@@ -25,8 +23,7 @@ public class Follower extends Player {
         calculateEdgePoints();
 
         if (this.follower != null) {
-            this.follower.dirX = x;
-            this.follower.dirY = y;
+            this.follower.updateDir(this.x, this.y, 150);
             this.follower.move(dt);
         }
     }
@@ -34,6 +31,9 @@ public class Follower extends Player {
     public void draw(GraphicsContext gc, double[][] prevPoints){
         gc.strokeLine(this.edgePoints[0][0], this.edgePoints[0][1], prevPoints[0][0], prevPoints[0][1]);
         gc.strokeLine(this.edgePoints[1][0], this.edgePoints[1][1], prevPoints[1][0], prevPoints[1][1]);
+        gc.strokeLine(this.x, this.y, this.dirX, this.dirY);
+
+        gc.fillOval(this.x-5, this.y-5, 10, 10);
 
         /*
         drawCurve(gc, this.edgePoints[0], prevPoints[0], true);

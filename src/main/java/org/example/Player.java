@@ -24,11 +24,55 @@ public class Player {
         }
     }
 
-    public void updateDir(double dx, double dy) {
+    public void updateDir(double dx, double dy, double maxAngle) {
+        //arccos((U * V) / (|U| * |V|))
         double targetVectorX = dx - x;
         double targetVectorY = dy - y;
 
+        double currentVectorX = dirX - x;
+        double currentVectorY = dirY - y;
 
+        double targetVectorLength = Math.sqrt(targetVectorX*targetVectorX + targetVectorY*targetVectorY);
+        double currentVectorLength = Math.sqrt(currentVectorX*currentVectorX + currentVectorY*currentVectorY);
+
+        double dotProduct = currentVectorX * targetVectorX + currentVectorY * targetVectorY;
+
+        double angleRadians = Math.acos(dotProduct/(targetVectorLength*currentVectorLength));
+
+        double angleDegrees = Math.toDegrees(angleRadians);
+
+        if (angleDegrees > maxAngle) {
+            System.out.println("Target vector x: " + targetVectorX + " y: " + targetVectorY);
+            System.out.println("Current vector x: " + currentVectorX + " y: " + currentVectorY);
+            System.out.println("Target Vector length: " + targetVectorLength);
+            System.out.println("Current Vector length: " + currentVectorLength);
+            System.out.println("Dot Product " + dotProduct);
+            System.out.println("Radians " + angleRadians);
+            System.out.println("Degrees " + angleDegrees);
+
+            double crossProduct = currentVectorX * targetVectorY - currentVectorY * targetVectorX;
+            boolean turnRight = crossProduct > 0;
+            double maxTurnRadians = Math.toRadians(maxAngle);
+            double cosTheta = Math.cos(maxTurnRadians);
+            double sinTheta = Math.sin(maxTurnRadians);
+
+            double newDirX;
+            double newDirY;
+            if (turnRight) {
+                newDirX = currentVectorX * cosTheta - currentVectorY * sinTheta;
+                newDirY = currentVectorX * sinTheta + currentVectorY * cosTheta;
+            } else {
+                // Rotate left by maxTurnAngle
+                newDirX = currentVectorX * cosTheta + currentVectorY * sinTheta;
+                newDirY = -currentVectorX * sinTheta + currentVectorY * cosTheta;
+            }
+            dirX = newDirX;
+            dirY = newDirY;
+        } else {
+            // If within the allowed angle, directly set the direction to the target
+            dirX = targetVectorX;
+            dirY = targetVectorY;
+        }
 
         dirX = dx;
         dirY = dy;
@@ -54,7 +98,7 @@ public class Player {
         calculateEdgePoints();
 
         if (this.follower != null) {
-            follower.updateDir(this.x, this.y);
+            follower.updateDir(this.x, this.y, 40);
             this.follower.move(dt);
         }
     }
@@ -78,13 +122,17 @@ public class Player {
     }
 
     public void draw(GraphicsContext gc){
+        gc.fillOval(this.x-5, this.y-5, 10, 10);
+        gc.strokeLine(this.x, this.y, this.dirX, this.dirY);
         drawArc(gc, this.edgePoints[1], this.edgePoints[0]);
         if (this.follower != null) {
             this.follower.draw(gc, this.edgePoints);
+        } else {
+            drawArc(gc, this.edgePoints[0], this.edgePoints[1]);
         }
     }
 
-    protected void drawArc(GraphicsContext gc, double[] p1, double[] p2, double maxHeight) {
+    protected void drawArc(GraphicsContext gc, double[] p1, double[] p2) {
         double centerX = (p1[0] + p2[0]) / 2;
         double centerY = (p1[1] + p2[1]) / 2;
 
@@ -93,14 +141,6 @@ public class Player {
         double angleRadians = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]);
         double angleDegrees = -Math.toDegrees(angleRadians);
 
-        if (maxHeight == 0) {
-            gc.strokeArc(centerX - radius, centerY - radius, radius * 2, radius * 2, angleDegrees, 180, ArcType.OPEN);
-        } else {
-            gc.strokeArc(centerX - radius, centerY - radius, radius * 2, maxHeight, angleDegrees, 180, ArcType.OPEN);
-        }
-    }
-
-    protected void drawArc(GraphicsContext gc, double[] p1, double[] p2){
-        drawArc(gc, p1, p2, 0);
+        gc.strokeArc(centerX - radius, centerY - radius, radius * 2, radius * 2, angleDegrees, 180, ArcType.OPEN);
     }
 }
