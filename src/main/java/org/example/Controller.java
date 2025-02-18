@@ -41,6 +41,13 @@ class Controller {
 
             double deltaTime = 0.016; // Approx. 60 FPS
             player.move(deltaTime);
+            Player previous = player;
+
+            for (Follower follower: player.followers) {
+                follower.setDir(previous);
+                follower.move(deltaTime);
+                previous = follower;
+            }
         }
     }
 }

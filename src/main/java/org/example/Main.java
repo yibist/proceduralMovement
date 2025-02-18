@@ -39,7 +39,12 @@ public class Main extends Application {
         stage.setTitle("IP12 Prototype");
         stage.show();
         scene.getCursor();
-        Player p = new Player(50,50,1);
+        Player p = new Player(50, 50, 25, 100);
+        p.addFollower(50);
+
+        p.addFollower(50);
+        p.addFollower(80);
+        p.addFollower(150);
 
         Controller c = new Controller(p);
         c.startGameLogic();
@@ -50,7 +55,7 @@ public class Main extends Application {
         });
         stage.setOnCloseRequest(event -> c.stopGameLogic());
 
-        View v = new View(graphicsContext,p);
+        View v = new View(graphicsContext, p);
         v.startRendering();
     }
 

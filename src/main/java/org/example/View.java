@@ -35,9 +35,13 @@ public class View {
      */
     private void render() {
         //System.out.println(1000/(System.currentTimeMillis()-clock));
-        clock = System.currentTimeMillis();;
+        clock = System.currentTimeMillis();
+        ;
         graphicsContext.clearRect(0, 0, Main.WIDTH, Main.HEIGHT);
 
-        graphicsContext.fillOval(player.x - player.size/2, player.y - player.size/2, player.size,player.size);
+        graphicsContext.fillOval(player.x - player.size / 2, player.y - player.size / 2, player.size, player.size);
+        for (Follower follower : player.followers) {
+            graphicsContext.fillOval(follower.x - follower.size / 2, follower.y - follower.size / 2, follower.size, follower.size);
+        }
     }
 }

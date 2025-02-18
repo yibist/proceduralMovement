@@ -2,12 +2,14 @@ package org.example;
 
 public class Follower extends Player {
 
-    public Follower(int x, int y, double speed) {
-        super(x, y, speed);
+    public Follower(double x, double y, double speed, double size) {
+        super(x, y, 100, size);
     }
 
-    @Override
-    public void move(double dt) {
-
+    public void setDir(Player follower) {
+        dirX = follower.x;
+        dirY = follower.y;
     }
+
+
 }

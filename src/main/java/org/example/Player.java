@@ -12,11 +12,18 @@ public class Player {
     public double size;
     public ArrayList<Follower> followers;
 
-    public Player(int x, int y, double speed) {
+    public Player(double x, double y, double speed, double size) {
         this.x = x;
         this.y = y;
         this.speed = speed;
+        this.size = size;
+        followers = new ArrayList<>();
     }
+
+    public void addFollower(double size ) {
+        followers.add(new Follower(this.x, this.y, this.speed, size));
+    };
+
     public void move(double dt) {
         double distanceX = dirX-x;
         double distanceY = dirY-y;
@@ -27,13 +34,11 @@ public class Player {
         double currentSpeed = speed;
 
 
-        System.out.println(distance + " " + currentSpeed);
-
         double normX = distanceX / distance;
         double normY = distanceY / distance;
 
-       x +=  normX * (currentSpeed * distance / 100);
-       y +=  normY * (currentSpeed * distance / 100);
+       x +=  normX * (currentSpeed * distance / 100) * dt;
+       y +=  normY * (currentSpeed * distance / 100) * dt;
 
     }
 }
