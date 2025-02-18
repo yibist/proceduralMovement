@@ -25,7 +25,8 @@ public class Player {
     }
 
     public void updateDir(double dx, double dy, double maxAngle) {
-        //arccos((U * V) / (|U| * |V|))
+        //TODO figure out way to limit angle (maybe last valid position and then moving closer, maybe rigid connections)
+        //angle calculation formula: arccos((U * V) / (|U| * |V|))
         double targetVectorX = dx - x;
         double targetVectorY = dy - y;
 
