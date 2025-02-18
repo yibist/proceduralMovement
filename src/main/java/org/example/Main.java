@@ -39,10 +39,11 @@ public class Main extends Application {
         stage.setTitle("IP12 Prototype");
         stage.show();
         scene.getCursor();
-        Player p = new Player(50, 50, 25, 100);
+        Player p = new Player(50, 50, 50, 100);
         p.addFollower(50);
 
         p.addFollower(50);
+
         p.addFollower(80);
         p.addFollower(150);
 

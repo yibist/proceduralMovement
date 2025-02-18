@@ -11,6 +11,7 @@ public class Player {
     double speed;
     public double size;
     public ArrayList<Follower> followers;
+    private Player previous;
 
     public Player(double x, double y, double speed, double size) {
         this.x = x;
@@ -18,10 +19,14 @@ public class Player {
         this.speed = speed;
         this.size = size;
         followers = new ArrayList<>();
+        previous = this;
     }
 
-    public void addFollower(double size ) {
-        followers.add(new Follower(this.x, this.y, this.speed, size));
+    public void addFollower(double size) {
+        Follower f = new Follower(this.x, this.y, this.speed, size, this);
+        followers.add(f);
+        previous = f;
+
     };
 
     public void move(double dt) {
