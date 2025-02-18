@@ -39,7 +39,7 @@ public class Main extends Application {
         stage.setTitle("IP12 Prototype");
         stage.show();
         scene.getCursor();
-        Player p = new Player(50, 50, 10, 100, 100);
+        Player p = new Player(50, 50, 10, 100, 20);
 
         Controller c = new Controller(p);
         c.startGameLogic();
