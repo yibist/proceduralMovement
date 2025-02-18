@@ -17,15 +17,12 @@ public class Follower extends Player {
         double normX = distanceX / distance;
         double normY = distanceY / distance;
 
-        if (distance < size) {return;}
-
-        this.x +=  normX * this.speed * dt;
-        this.y +=  normY * this.speed * dt;
+        this.x = dirX - this.size * normX;
+        this.y = dirY - this.size * normY;
 
         if (this.follower != null) {
             this.follower.dirX = x;
             this.follower.dirY = y;
-            this.follower.speed = speed;
             this.follower.move(dt);
         }
     }

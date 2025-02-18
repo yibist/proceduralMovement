@@ -17,7 +17,7 @@ public class Player {
         this.speed = speed;
         this.size = size;
         if (followerCount > 0) {
-            follower = new Follower(this.x, this.y, speed, size-(size/4), followerCount-1);
+            follower = new Follower(this.x, this.y, speed, size-(size/20), followerCount-1);
         }
     }
 
@@ -42,13 +42,12 @@ public class Player {
         if (this.follower != null) {
             this.follower.dirX = this.x;
             this.follower.dirY = this.y;
-            this.follower.speed = currentSpeed;
             this.follower.move(dt);
         }
     }
 
     public void draw(GraphicsContext gc){
-        gc.fillOval(this.x - this.size / 2, this.y - this.size/2, this.size, this.size);
+        gc.fillOval(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
         if (this.follower != null) {
             this.follower.draw(gc);
         }
