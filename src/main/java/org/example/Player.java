@@ -10,6 +10,7 @@ public class Player {
     public double dirY;
     double speed;
     public double size;
+    public static double MAXANGLE = 40;
     public Follower follower = null;
 
     double[][] edgePoints = new double[2][2];
@@ -24,15 +25,19 @@ public class Player {
         }
     }
 
-    public void updateDir(double dx, double dy, double maxAngle) {
+    public void updateDir(double dx, double dy) {
         //TODO figure out way to limit angle (maybe last valid position and then moving closer, maybe rigid connections)
         //angle calculation formula: arccos((U * V) / (|U| * |V|))
+
+        //target location
         double targetVectorX = dx - x;
         double targetVectorY = dy - y;
 
+        //current target location
         double currentVectorX = dirX - x;
         double currentVectorY = dirY - y;
 
+        //length of both vectors
         double targetVectorLength = Math.sqrt(targetVectorX*targetVectorX + targetVectorY*targetVectorY);
         double currentVectorLength = Math.sqrt(currentVectorX*currentVectorX + currentVectorY*currentVectorY);
 
@@ -42,7 +47,8 @@ public class Player {
 
         double angleDegrees = Math.toDegrees(angleRadians);
 
-        if (angleDegrees > maxAngle) {
+        if (angleDegrees > MAXANGLE) {
+            /*
             System.out.println("Target vector x: " + targetVectorX + " y: " + targetVectorY);
             System.out.println("Current vector x: " + currentVectorX + " y: " + currentVectorY);
             System.out.println("Target Vector length: " + targetVectorLength);
@@ -50,10 +56,11 @@ public class Player {
             System.out.println("Dot Product " + dotProduct);
             System.out.println("Radians " + angleRadians);
             System.out.println("Degrees " + angleDegrees);
+            */
 
             double crossProduct = currentVectorX * targetVectorY - currentVectorY * targetVectorX;
             boolean turnRight = crossProduct > 0;
-            double maxTurnRadians = Math.toRadians(maxAngle);
+            double maxTurnRadians = Math.toRadians(MAXANGLE);
             double cosTheta = Math.cos(maxTurnRadians);
             double sinTheta = Math.sin(maxTurnRadians);
 
@@ -67,16 +74,16 @@ public class Player {
                 newDirX = currentVectorX * cosTheta + currentVectorY * sinTheta;
                 newDirY = -currentVectorX * sinTheta + currentVectorY * cosTheta;
             }
-            dirX = newDirX;
-            dirY = newDirY;
+            dirX = this.x + newDirX;
+            dirY = this.y + newDirY;
         } else {
             // If within the allowed angle, directly set the direction to the target
-            dirX = targetVectorX;
-            dirY = targetVectorY;
+            dirX = this.x + targetVectorX;
+            dirY = this.y + targetVectorY;
         }
 
-        dirX = dx;
-        dirY = dy;
+        //dirX = dx;
+        //dirY = dy;
     }
 
     public void move(double dt) {
@@ -99,7 +106,7 @@ public class Player {
         calculateEdgePoints();
 
         if (this.follower != null) {
-            follower.updateDir(this.x, this.y, 40);
+            follower.updateDir(this.x, this.y);
             this.follower.move(dt);
         }
     }

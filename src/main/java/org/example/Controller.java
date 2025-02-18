@@ -27,7 +27,7 @@ class Controller {
     private void gameStep() {
         if (running) {
             double deltaTime = 0.016; // Approx. 60 FPS
-            player.updateDir(Main.MouseX, Main.MouseY, 40);
+            player.updateDir(Main.MouseX, Main.MouseY);
             player.move(deltaTime);
         }
     }

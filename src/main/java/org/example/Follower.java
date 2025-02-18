@@ -23,7 +23,7 @@ public class Follower extends Player {
         calculateEdgePoints();
 
         if (this.follower != null) {
-            this.follower.updateDir(this.x, this.y, 150);
+            this.follower.updateDir(this.x, this.y);
             this.follower.move(dt);
         }
     }
