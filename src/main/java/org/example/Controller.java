@@ -1,22 +1,13 @@
 package org.example;
 
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 class Controller {
-    private final List<KeyCode> pressedKeys = Collections.synchronizedList(new ArrayList<>());
     private final Player player;
     private final ScheduledExecutorService executor;
     private volatile boolean running = true;
-    protected final AtomicInteger gameTicks = new AtomicInteger();
 
     Controller(Player player) {
         this.player = player;
@@ -35,11 +26,8 @@ class Controller {
 
     private void gameStep() {
         if (running) {
-            // Update the model (logic)
-            gameTicks.getAndIncrement();
-
-
             double deltaTime = 0.016; // Approx. 60 FPS
+            player.updateDir(Main.MouseX, Main.MouseY);
             player.move(deltaTime);
         }
     }

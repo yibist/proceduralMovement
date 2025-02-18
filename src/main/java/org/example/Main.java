@@ -12,8 +12,9 @@ import javafx.stage.Stage;
 import java.awt.*;
 
 public class Main extends Application {
-    public static int WIDTH = 0;
-    public static int HEIGHT = 0;
+    public static int WIDTH = 0, HEIGHT = 0;
+
+    public static double MouseX = 0, MouseY = 0;
 
     @Override
     public void start(Stage stage) {
@@ -37,7 +38,7 @@ public class Main extends Application {
         scene.setCursor(Cursor.DEFAULT);
 
         stage.setScene(scene);
-        stage.setTitle("IP12 Prototype");
+        stage.setTitle("IP12 Procedural Animation Prototype");
         stage.show();
         scene.getCursor();
         Player p = new Player(50, 50, 10, 100, 50);
@@ -46,9 +47,12 @@ public class Main extends Application {
         c.startGameLogic();
 
         scene.setOnMouseMoved(move -> {
-            p.dirX = move.getX();
-            p.dirY = move.getY();
+            MouseX = move.getX();
+            MouseY = move.getY();
+            //p.dirX = move.getX();
+            //p.dirY = move.getY();
         });
+
         stage.setOnCloseRequest(event -> c.stopGameLogic());
 
         View v = new View(graphicsContext, p);

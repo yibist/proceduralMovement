@@ -24,6 +24,16 @@ public class Player {
         }
     }
 
+    public void updateDir(double dx, double dy) {
+        double targetVectorX = dx - x;
+        double targetVectorY = dy - y;
+
+
+
+        dirX = dx;
+        dirY = dy;
+    }
+
     public void move(double dt) {
         double distanceX = this.dirX-x;
         double distanceY = this.dirY-y;
@@ -44,8 +54,7 @@ public class Player {
         calculateEdgePoints();
 
         if (this.follower != null) {
-            this.follower.dirX = this.x;
-            this.follower.dirY = this.y;
+            follower.updateDir(this.x, this.y);
             this.follower.move(dt);
         }
     }
@@ -69,13 +78,13 @@ public class Player {
     }
 
     public void draw(GraphicsContext gc){
-        drawArc(gc, this.edgePoints[1], this.edgePoints[0], (this.size/3)*4);
+        drawArc(gc, this.edgePoints[1], this.edgePoints[0]);
         if (this.follower != null) {
             this.follower.draw(gc, this.edgePoints);
         }
     }
 
-    protected void drawArc(GraphicsContext gc, double[] p1, double[] p2, double height) {
+    protected void drawArc(GraphicsContext gc, double[] p1, double[] p2, double maxHeight) {
         double centerX = (p1[0] + p2[0]) / 2;
         double centerY = (p1[1] + p2[1]) / 2;
 
@@ -84,10 +93,10 @@ public class Player {
         double angleRadians = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]);
         double angleDegrees = -Math.toDegrees(angleRadians);
 
-        if (height == 0) {
+        if (maxHeight == 0) {
             gc.strokeArc(centerX - radius, centerY - radius, radius * 2, radius * 2, angleDegrees, 180, ArcType.OPEN);
         } else {
-            gc.strokeArc(centerX - radius, centerY - radius, radius * 2, height, angleDegrees, 180, ArcType.OPEN);
+            gc.strokeArc(centerX - radius, centerY - radius, radius * 2, maxHeight, angleDegrees, 180, ArcType.OPEN);
         }
     }
 

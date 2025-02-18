@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.ArcType;
 
 public class Follower extends Player {
 
@@ -19,8 +20,9 @@ public class Follower extends Player {
         double normX = (distanceX / distance)/Math.sqrt(2);
         double normY = (distanceY / distance)/Math.sqrt(2);
 
-        this.x = dirX - (this.size/3) * normX;
-        this.y = dirY - (this.size/3) * normY;
+        this.x = dirX - (this.size/2) * normX;
+        this.y = dirY - (this.size/2) * normY;
+        calculateEdgePoints();
 
         if (this.follower != null) {
             this.follower.dirX = x;
@@ -30,10 +32,13 @@ public class Follower extends Player {
     }
 
     public void draw(GraphicsContext gc, double[][] prevPoints){
-        calculateEdgePoints();
-
         gc.strokeLine(this.edgePoints[0][0], this.edgePoints[0][1], prevPoints[0][0], prevPoints[0][1]);
         gc.strokeLine(this.edgePoints[1][0], this.edgePoints[1][1], prevPoints[1][0], prevPoints[1][1]);
+
+        /*
+        drawCurve(gc, this.edgePoints[0], prevPoints[0], true);
+        drawCurve(gc, this.edgePoints[1], prevPoints[1], false);
+        */
 
         if (this.follower != null) {
             this.follower.draw(gc, this.edgePoints);
@@ -41,5 +46,41 @@ public class Follower extends Player {
             drawArc(gc, this.edgePoints[0], this.edgePoints[1] );
         }
     }
+
+    /*
+    protected void drawCurve(GraphicsContext gc, double[] p1, double[] p2, boolean inverted){
+        double centerX = (p1[0] + p2[0]) / 2;
+        double centerY = (p1[1] + p2[1]) / 2;
+
+        double distance = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]);
+
+        double radius = distance / 2;
+
+        double angleRadians = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]);
+
+        double angleDegrees = -Math.toDegrees(angleRadians);
+
+        if(inverted){
+            gc.strokeArc(
+                    centerX - radius,         // Top-left X of the bounding box
+                    centerY - radius,         // Top-left Y of the bounding box
+                    radius * 2,               // Width of the bounding box (diameter)
+                    radius * 2,               // Height of the bounding box (diameter)
+                    angleDegrees-180,        // Start angle (ensures arc orientation follows direction from p1 to p2)
+                    180,                      // Sweep angle (half-circle)
+                    javafx.scene.shape.ArcType.OPEN
+            );
+        } else {
+            gc.strokeArc(
+                    centerX - radius,         // Top-left X of the bounding box
+                    centerY - radius,         // Top-left Y of the bounding box
+                    radius * 2,               // Width of the bounding box (diameter)
+                    radius * 2,               // Height of the bounding box (diameter)
+                    (angleDegrees-4)/2,        // Start angle (ensures arc orientation follows direction from p1 to p2)
+                    4,                      // Sweep angle (half-circle)
+                    javafx.scene.shape.ArcType.OPEN
+            );
+        }
+    }*/
 
 }
