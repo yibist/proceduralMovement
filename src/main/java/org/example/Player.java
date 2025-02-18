@@ -1,7 +1,7 @@
 package org.example;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 
 public class Player {
     public double x;
@@ -59,17 +59,39 @@ public class Player {
         double normX = (distanceX / distance);
         double normY = (distanceY / distance);
 
-        this.edgePoints[0][0] = this.x + -normY*(this.size/2);
-        this.edgePoints[0][1] = this.y + normX*(this.size/2);
+        double halfSize = this.size/2;
 
-        this.edgePoints[1][0] = this.x + normY*(this.size/2);
-        this.edgePoints[1][1] = this.y + -normX*(this.size/2);
+        this.edgePoints[0][0] = this.x + -normY*halfSize;
+        this.edgePoints[0][1] = this.y + normX*halfSize;
+
+        this.edgePoints[1][0] = this.x + normY*halfSize;
+        this.edgePoints[1][1] = this.y + -normX*halfSize;
     }
 
     public void draw(GraphicsContext gc){
-        gc.fillOval(this.x-this.size/2, this.y-this.size/2, this.size, this.size);
+        drawArc(gc, this.edgePoints[1], this.edgePoints[0], (this.size/3)*4);
         if (this.follower != null) {
             this.follower.draw(gc, this.edgePoints);
         }
+    }
+
+    protected void drawArc(GraphicsContext gc, double[] p1, double[] p2, double height) {
+        double centerX = (p1[0] + p2[0]) / 2;
+        double centerY = (p1[1] + p2[1]) / 2;
+
+        double radius = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]) / 2;
+
+        double angleRadians = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]);
+        double angleDegrees = -Math.toDegrees(angleRadians);
+
+        if (height == 0) {
+            gc.strokeArc(centerX - radius, centerY - radius, radius * 2, radius * 2, angleDegrees, 180, ArcType.OPEN);
+        } else {
+            gc.strokeArc(centerX - radius, centerY - radius, radius * 2, height, angleDegrees, 180, ArcType.OPEN);
+        }
+    }
+
+    protected void drawArc(GraphicsContext gc, double[] p1, double[] p2){
+        drawArc(gc, p1, p2, 0);
     }
 }

@@ -29,6 +29,7 @@ public class Main extends Application {
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext.setImageSmoothing(true);
         graphicsContext.setFill(Color.DARKBLUE);
+        graphicsContext.setStroke(Color.DARKBLUE);
 
         StackPane root = new StackPane(canvas);
 
@@ -39,7 +40,7 @@ public class Main extends Application {
         stage.setTitle("IP12 Prototype");
         stage.show();
         scene.getCursor();
-        Player p = new Player(50, 50, 10, 100, 20);
+        Player p = new Player(50, 50, 10, 100, 50);
 
         Controller c = new Controller(p);
         c.startGameLogic();
