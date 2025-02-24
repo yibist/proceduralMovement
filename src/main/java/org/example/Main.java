@@ -40,7 +40,6 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("IP12 Procedural Animation Prototype");
         stage.show();
-        scene.getCursor();
         Player p = new Player(50, 50, 25, 100, 20);
 
         Controller c = new Controller(p);
@@ -49,8 +48,6 @@ public class Main extends Application {
         scene.setOnMouseMoved(move -> {
             MouseX = move.getX();
             MouseY = move.getY();
-            //p.dirX = move.getX();
-            //p.dirY = move.getY();
         });
 
         stage.setOnCloseRequest(event -> c.stopGameLogic());

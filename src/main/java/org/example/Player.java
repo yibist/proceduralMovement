@@ -10,7 +10,7 @@ public class Player {
     public double dirY;
     double speed;
     public double size;
-    public static double MAXANGLE = 40;
+    public static final double MAX_ANGLE = 40;
     public Follower follower = null;
 
     double[][] edgePoints = new double[2][2];
@@ -47,7 +47,7 @@ public class Player {
 
         double angleDegrees = Math.toDegrees(angleRadians);
 
-        if (angleDegrees > MAXANGLE) {
+        if (angleDegrees > MAX_ANGLE) {
             /*
             System.out.println("Target vector x: " + targetVectorX + " y: " + targetVectorY);
             System.out.println("Current vector x: " + currentVectorX + " y: " + currentVectorY);
@@ -60,7 +60,7 @@ public class Player {
 
             double crossProduct = currentVectorX * targetVectorY - currentVectorY * targetVectorX;
             boolean turnRight = crossProduct > 0;
-            double maxTurnRadians = Math.toRadians(MAXANGLE);
+            double maxTurnRadians = Math.toRadians(MAX_ANGLE);
             double cosTheta = Math.cos(maxTurnRadians);
             double sinTheta = Math.sin(maxTurnRadians);
 
@@ -81,9 +81,6 @@ public class Player {
             dirX = this.x + targetVectorX;
             dirY = this.y + targetVectorY;
         }
-
-        //dirX = dx;
-        //dirY = dy;
     }
 
     public void move(double dt) {
