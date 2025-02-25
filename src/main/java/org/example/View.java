@@ -4,17 +4,15 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.List;
-
 
 public class View {
     private final GraphicsContext graphicsContext;
-    private final Player player;
+    private final Head head;
     private long clock;
 
-    View(GraphicsContext graphicsContext, Player player) {
+    View(GraphicsContext graphicsContext, Head head) {
         this.graphicsContext = graphicsContext;
-        this.player = player;
+        this.head = head;
     }
 
     /**
@@ -35,13 +33,45 @@ public class View {
      */
     private void render() {
         //System.out.println(1000/(System.currentTimeMillis()-clock));
-        clock = System.currentTimeMillis();
-        ;
+        //clock = System.currentTimeMillis();
+
+        graphicsContext.setFill(Color.DARKBLUE);
+
         graphicsContext.clearRect(0, 0, Main.WIDTH, Main.HEIGHT);
 
-        graphicsContext.fillOval(player.x - player.size / 2, player.y - player.size / 2, player.size, player.size);
-        for (Follower follower : player.followers) {
-            graphicsContext.fillOval(follower.x - follower.size / 2, follower.y - follower.size / 2, follower.size, follower.size);
+        graphicsContext.fillOval(head.x - head.size / 2, head.y - head.size / 2, head.size, head.size);
+
+        Moveable moveable = head.follower;
+        while (moveable != null) {
+            graphicsContext.fillOval(moveable.x - moveable.size / 2, moveable.y - moveable.size / 2, moveable.size, moveable.size);
+            graphicsContext.setStroke(Color.PURPLE);
+
+
+
+            double distanceX = moveable.x - moveable.following.x;
+            double distanceY = moveable.y - moveable.following.y;
+
+            double distance =  Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+
+            double normX = (distanceX / distance);
+            double normY = (distanceY / distance);
+
+            double px1 = moveable.x + -normY*(moveable.size/2);
+            double py1 = moveable.y + normX*(moveable.size/2);
+
+            double px2 = moveable.x + normY*(moveable.size/2);
+            double py2 = moveable.y + -normX*(moveable.size/2);
+
+            double px3 = moveable.following.x + -normY*(moveable.following.size/2);
+            double py3 = moveable.following.y + normX*(moveable.following.size/2);
+
+            double px4 = moveable.following.x + normY*(moveable.following.size/2);
+            double py4 = moveable.following.y + -normX*(moveable.following.size/2);
+
+            graphicsContext.fillPolygon(new double[] {px1,px3,px4,px2}, new double[] {py1,py3,py4,py2}, 4);
+            graphicsContext.strokeLine(moveable.x, moveable.y, moveable.following.x, moveable.following.y);
+
+            moveable = moveable.follower;
         }
     }
 }

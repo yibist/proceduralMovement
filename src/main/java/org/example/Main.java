@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -14,6 +13,9 @@ import java.awt.*;
 public class Main extends Application {
     public static int WIDTH = 0;
     public static int HEIGHT = 0;
+    public static double mouseX;
+    public static double mouseY;
+
 
     @Override
     public void start(Stage stage) {
@@ -28,7 +30,6 @@ public class Main extends Application {
 
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext.setImageSmoothing(false);
-        graphicsContext.setFill(Color.DARKBLUE);
 
         StackPane root = new StackPane(canvas);
 
@@ -36,24 +37,33 @@ public class Main extends Application {
         scene.setCursor(Cursor.DEFAULT);
 
         stage.setScene(scene);
-        stage.setTitle("IP12 Prototype");
+        stage.setTitle("Procedural Movement");
         stage.show();
         scene.getCursor();
-        Player p = new Player(50, 50, 50, 100);
-        p.addFollower(50);
 
-        p.addFollower(50);
+        Head p = new Head(500, 500, 600, 60, 20);
+        Moveable m = p.addBodypart(70,20);
+        for (int i = 0; i < 10; i++) {
+            m.addBodypart(50,20);
+            m = m.follower;
+        }
+        for (int i = 0; i < 10; i++) {
+            m.addBodypart(40,20);
+            m = m.follower;
+        }
+        for (int i = 0; i < 10; i++) {
+            m.addBodypart(30,20);
+            m = m.follower;
+        }
 
-        p.addFollower(80);
-        p.addFollower(150);
+        scene.setOnMouseMoved(move -> {
+            mouseX = move.getX();
+            mouseY = move.getY();
+        });
 
         Controller c = new Controller(p);
         c.startGameLogic();
 
-        scene.setOnMouseMoved(move -> {
-            p.dirX = move.getX();
-            p.dirY = move.getY();
-        });
         stage.setOnCloseRequest(event -> c.stopGameLogic());
 
         View v = new View(graphicsContext, p);

@@ -1,6 +1,5 @@
 package org.example;
 
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
@@ -12,20 +11,20 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class Controller {
+    private static final long tickSpeed = 1;
     private final List<KeyCode> pressedKeys = Collections.synchronizedList(new ArrayList<>());
-    private final Player player;
+    private final Head head;
     private final ScheduledExecutorService executor;
     private volatile boolean running = true;
     protected final AtomicInteger gameTicks = new AtomicInteger();
 
-    Controller(Player player) {
-        this.player = player;
+    Controller(Head head) {
+        this.head = head;
         this.executor = Executors.newSingleThreadScheduledExecutor();
     }
 
     public void startGameLogic() {
-        // Run the game logic at a fixed rate
-        executor.scheduleAtFixedRate(this::gameStep, 0, 16, TimeUnit.MILLISECONDS); // 16ms ≈ 60 updates per second
+        executor.scheduleAtFixedRate(this::gameStep, 0, tickSpeed, TimeUnit.MILLISECONDS);
     }
 
     public void stopGameLogic() {
@@ -35,18 +34,15 @@ class Controller {
 
     private void gameStep() {
         if (running) {
-            // Update the model (logic)
             gameTicks.getAndIncrement();
+            double deltaTime = (double) tickSpeed / 1000;
 
+            head.move(deltaTime);
 
-            double deltaTime = 0.016; // Approx. 60 FPS
-            player.move(deltaTime);
-            Player previous = player;
-
-            for (Follower follower: player.followers) {
-                follower.setDir(previous);
-                follower.move(deltaTime);
-                previous = follower;
+            Moveable moveable = head.follower;
+            while (moveable != null) {
+                moveable.move(deltaTime);
+                moveable = moveable.follower;
             }
         }
     }
