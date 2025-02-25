@@ -75,12 +75,8 @@ public class Player {
                 newDirY = (-currentVectorX * sinTheta + currentVectorY * cosTheta);
             }
 
-            double newLen = Math.sqrt(newDirX*newDirX + newDirY*newDirY);
-            double normNewX = newDirX / newLen;
-            double normNewY = newDirY / newLen;
-
-            dirX = this.x + (newDirX*normNewX);
-            dirY = this.y + (newDirY*normNewY);
+            dirX = this.x + newDirX;
+            dirY = this.y + newDirY;
         } else {
             // If within the allowed angle, directly set the direction to the target
             dirX = this.x + targetVectorX;
