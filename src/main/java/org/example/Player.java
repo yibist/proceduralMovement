@@ -10,7 +10,7 @@ public class Player {
     public double dirY;
     double speed;
     public double size;
-    public static final double MAX_ANGLE = 40;
+    public static final double MAX_ANGLE = 20;
     public Follower follower = null;
 
     double[][] edgePoints = new double[2][2];
@@ -67,15 +67,20 @@ public class Player {
             double newDirX;
             double newDirY;
             if (turnRight) {
-                newDirX = currentVectorX * cosTheta - currentVectorY * sinTheta;
-                newDirY = currentVectorX * sinTheta + currentVectorY * cosTheta;
+                newDirX = (currentVectorX * cosTheta - currentVectorY * sinTheta);
+                newDirY = (currentVectorX * sinTheta + currentVectorY * cosTheta);
             } else {
                 // Rotate left by maxTurnAngle
-                newDirX = (currentVectorX * cosTheta + currentVectorY * sinTheta) * currentVectorLength;
-                newDirY = (-currentVectorX * sinTheta + currentVectorY * cosTheta) * currentVectorLength;
+                newDirX = (currentVectorX * cosTheta + currentVectorY * sinTheta);
+                newDirY = (-currentVectorX * sinTheta + currentVectorY * cosTheta);
             }
-            dirX = this.x + newDirX;
-            dirY = this.y + newDirY;
+
+            double newLen = Math.sqrt(newDirX*newDirX + newDirY*newDirY);
+            double normNewX = newDirX / newLen;
+            double normNewY = newDirY / newLen;
+
+            dirX = this.x + (newDirX*normNewX);
+            dirY = this.y + (newDirY*normNewY);
         } else {
             // If within the allowed angle, directly set the direction to the target
             dirX = this.x + targetVectorX;
