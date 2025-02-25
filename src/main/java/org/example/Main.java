@@ -40,7 +40,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("IP12 Procedural Animation Prototype");
         stage.show();
-        Player p = new Player(50, 50, 25, 100, 20);
+        Player p = new Player(50, 50, 4, 100, 20);
 
         Controller c = new Controller(p);
         c.startGameLogic();

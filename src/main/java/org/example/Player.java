@@ -71,8 +71,8 @@ public class Player {
                 newDirY = currentVectorX * sinTheta + currentVectorY * cosTheta;
             } else {
                 // Rotate left by maxTurnAngle
-                newDirX = currentVectorX * cosTheta + currentVectorY * sinTheta;
-                newDirY = -currentVectorX * sinTheta + currentVectorY * cosTheta;
+                newDirX = (currentVectorX * cosTheta + currentVectorY * sinTheta) * currentVectorLength;
+                newDirY = (-currentVectorX * sinTheta + currentVectorY * cosTheta) * currentVectorLength;
             }
             dirX = this.x + newDirX;
             dirY = this.y + newDirY;
