@@ -45,16 +45,54 @@ public class View {
         Moveable moveable = head.follower;
 
         while (moveable !=null) {
-            graphicsContext.fillOval(moveable.x - moveable.size / 2, moveable.y - moveable.size / 2, moveable.size, moveable.size);
+            //graphicsContext.fillOval(moveable.x - moveable.size / 2, moveable.y - moveable.size / 2, moveable.size, moveable.size);
             graphicsContext.setStroke(Color.PURPLE);
 
 
+            if (moveable.follower == null) {
+                break;
+            }
             //drawPolygon(moveable);
-
-            graphicsContext.strokeLine(moveable.x, moveable.y, moveable.following.x, moveable.following.y);
+            //graphicsContext.strokeLine(moveable.x, moveable.y, moveable.following.x, moveable.following.y);
+            drawEdge(moveable);
             moveable = moveable.follower;
         }
         drawEyes();
+    }
+
+    private void drawEdge (Moveable moveable) {
+        double distanceX = moveable.x - moveable.following.x;
+        double distanceY = moveable.y - moveable.following.y;
+
+        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        double normX = (distanceX / distance);
+        double normY = (distanceY / distance);
+
+        double moveableX1 = moveable.x + -normY * (moveable.size / 2);
+        double moveableY1 = moveable.y + normX * (moveable.size / 2);
+
+        double moveableX2 = moveable.x + normY * (moveable.size / 2);
+        double moveableY2 = moveable.y + -normX * (moveable.size / 2);
+
+        double followingX1 = moveable.following.x + -normY * (moveable.following.size / 2);
+        double followingY1 = moveable.following.y + normX * (moveable.following.size / 2);
+
+        double followingX2 = moveable.following.x + normY * (moveable.following.size / 2);
+        double followingY2 = moveable.following.y + -normX * (moveable.following.size / 2);
+
+        double followerX1 = moveable.follower.x + -normY * (moveable.follower.size / 2);
+        double followerY1 = moveable.follower.y + normX * (moveable.size / 2);
+
+        double followerX2 = moveable.follower.x + normY * (moveable.size / 2);
+        double followerY2 = moveable.follower.y + -normX * (moveable.size / 2);
+
+        graphicsContext.beginPath();
+        graphicsContext.moveTo(followingX1, followingY1);
+        graphicsContext.quadraticCurveTo(moveableX1, moveableY1, followerX1, followerY1);
+        graphicsContext.moveTo(followingX2, followingY2);
+        graphicsContext.quadraticCurveTo(moveableX2, moveableY2, followerX2, followerY2);
+        graphicsContext.stroke();
     }
 
     private void drawPolygon(Moveable moveable) {
