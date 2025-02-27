@@ -40,26 +40,30 @@ public class Main extends Application {
         stage.setTitle("Procedural Movement");
         stage.show();
         scene.getCursor();
-
-        Head p = new Head(500, 500, 600, 60, 20);
-        Moveable m = p.addBodypart(70,20);
-        for (int i = 0; i < 10; i++) {
-            m.addBodypart(50,20);
-            m = m.follower;
-        }
-        for (int i = 0; i < 10; i++) {
-            m.addBodypart(40,20);
-            m = m.follower;
-        }
-        for (int i = 0; i < 10; i++) {
-            m.addBodypart(30,20);
-            m = m.follower;
-        }
-
         scene.setOnMouseMoved(move -> {
             mouseX = move.getX();
             mouseY = move.getY();
         });
+        int distance = 30;
+        Head p = new Head(50, 50, 1000, 68, distance);
+        Moveable m = p.addBodypart(84, distance);
+        int[] bodySizes = {87, 85, 83, 77, 64, 60, 51, 38, 32, 19, 15};
+
+        for (int size : bodySizes) {
+            m = m.addBodypart(size, distance);
+
+        }
+
+        for (int i = 0; i < 5000; i++) {
+
+          //m = m.addBodypart(50, distance);
+        }
+
+
+
+
+
+
 
         Controller c = new Controller(p);
         c.startGameLogic();
