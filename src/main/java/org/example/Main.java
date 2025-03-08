@@ -55,7 +55,6 @@ public class Main extends Application {
         }
 
         for (int i = 0; i < 10000; i++) {
-
           //m = m.addBodypart(50, distance);
         }
 

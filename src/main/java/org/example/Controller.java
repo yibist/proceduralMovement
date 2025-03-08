@@ -38,10 +38,12 @@ class Controller {
             double deltaTime = (double) tickSpeed / 1000;
 
             head.move(deltaTime);
+            head.calculateSidePoints();
 
             Moveable moveable = head.follower;
             while (moveable != null) {
                 moveable.move(deltaTime);
+                moveable.calculateSidePoints();
                 moveable = moveable.follower;
             }
         }

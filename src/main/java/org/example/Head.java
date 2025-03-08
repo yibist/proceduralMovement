@@ -30,4 +30,17 @@ public class Head extends Moveable {
 
 
     }
+
+    @Override
+    public void calculateSidePoints() {
+        double distanceX = this.x - this.follower.x;
+        double distanceY = this.y - this.follower.y;
+
+        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        double normX = (distanceX / distance);
+        double normY = (distanceY / distance);
+
+        this.sidePoints = new double[]{this.x + -normY * (this.size / 2),this.y + normX * (this.size / 2),this.x + normY * (this.size / 2),this.y + -normX * (this.size / 2)};
+    }
 }
